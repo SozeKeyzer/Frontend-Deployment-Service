@@ -38,7 +38,9 @@ export const getFiles = (folderPath : string )=> {
 }
 
 export const copyFinalDist = (id: string)=>{
-    const folderPath = path.join(__dirname,`output/${id}/dist`);
+    const folders =  fs.readdirSync(path.join(__dirname,`output/${id}`));
+    const buildFolderName = (folders.includes('dist')) ? 'dist' : 'build';
+    const folderPath = path.join(__dirname,`output/${id}`,buildFolderName);
     const allFiles = getFiles(folderPath);
     allFiles.forEach(async file=>{
         await uploadFile(`dist/${id}` +'/'+ file.slice(folderPath.length+1).replace(/\\/g, "/"),file);
